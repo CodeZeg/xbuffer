@@ -1,0 +1,16 @@
+class A
+{
+	a:[bool];
+	b:[int];
+	c:[float];
+	d:[string];
+	e:[E];
+}
+
+class E
+{
+	a:bool;
+	b:int;
+	c:float;
+	d:string;
+}

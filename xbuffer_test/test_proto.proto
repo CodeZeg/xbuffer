@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+message proto_a
+{
+	repeated bool a = 1;
+	repeated int32 b = 2;
+	repeated float c = 3;
+	repeated string d = 4;
+	repeated proto_e e = 5;
+}
+
+message proto_e
+{
+	optional bool a = 1;
+	optional int32 b = 2;
+	optional float c = 3;
+	optional string d = 4;
+}

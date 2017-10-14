@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xbuffer_runtime", "xbuffer_runtime\xbuffer_runtime.csproj", "{304D8131-C14A-4CEB-B053-2ED2649777EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xbuffer_parser", "xbuffer_parser\xbuffer_parser.csproj", "{00CF1D92-56BD-4048-8F4B-017775DD8C5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xbuffer_test", "xbuffer_test\xbuffer_test.csproj", "{F2948537-984A-4DD4-A15E-58B597C379A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{304D8131-C14A-4CEB-B053-2ED2649777EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{304D8131-C14A-4CEB-B053-2ED2649777EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{304D8131-C14A-4CEB-B053-2ED2649777EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{304D8131-C14A-4CEB-B053-2ED2649777EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CF1D92-56BD-4048-8F4B-017775DD8C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CF1D92-56BD-4048-8F4B-017775DD8C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CF1D92-56BD-4048-8F4B-017775DD8C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CF1D92-56BD-4048-8F4B-017775DD8C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2948537-984A-4DD4-A15E-58B597C379A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2948537-984A-4DD4-A15E-58B597C379A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2948537-984A-4DD4-A15E-58B597C379A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2948537-984A-4DD4-A15E-58B597C379A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+public partial #CLASS_TYPE# #CLASS_NAME#
+{
+#VARIABLES#
+#IF_SINGLE#
+	public #VAR_TYPE# #VAR_NAME#;
+#END_SINGLE#
+#IF_ARRAY#
+	public #VAR_TYPE#[] #VAR_NAME#;
+#END_ARRAY#
+#VARIABLES#
+}

@@ -1,0 +1,16 @@
+table A
+{
+	a:[bool];
+	b:[int];
+	c:[float];
+	d:[string];
+	e:[E];
+}
+
+table E
+{
+	a:bool;
+	b:int;
+	c:float;
+	d:string;
+}
