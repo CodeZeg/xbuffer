@@ -1,10 +1,15 @@
-﻿using System.Text.RegularExpressions;
+﻿/*
+ * File Name:               Proto.cs
+ *
+ * Description:             原型语法解析工具
+ * Author:                  lisiyu <576603306@qq.com>
+ * Create Date:             2017/10/25
+ */
+
+using System.Text.RegularExpressions;
 
 namespace xbuffer
 {
-    /// <summary>
-    /// 原型语法解析工具
-    /// </summary>
     public class Proto
     {
         public Proto_Class[] class_protos;

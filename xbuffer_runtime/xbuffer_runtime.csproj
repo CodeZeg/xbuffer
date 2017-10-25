@@ -45,7 +45,9 @@
   <ItemGroup>
     <Compile Include="boolBuffer.cs" />
     <Compile Include="intBuffer.cs" />
+    <Compile Include="longBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializer.cs" />
     <Compile Include="stringBuffer.cs" />
   </ItemGroup>
   <ItemGroup>

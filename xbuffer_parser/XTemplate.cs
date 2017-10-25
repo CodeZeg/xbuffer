@@ -1,8 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿/*
+ * File Name:               XTemplate.cs
+ *
+ * Description:             模板处理 简化生成代码的过程
+ * Author:                  lisiyu <576603306@qq.com>
+ * Create Date:             2017/10/25
+ */
 
-/// <summary>
-/// 模板处理 简化生成代码的过程
-/// </summary>
+using System.Text.RegularExpressions;
 public class XTemplate
 {
     private string mContent;                                        // 当前内容

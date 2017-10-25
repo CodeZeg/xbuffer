@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-// There are 2 #defines that have an impact on performance of this ByteBuffer implementation
-//
-//      UNSAFE_BYTEBUFFER 
-//          This will use unsafe code to manipulate the underlying byte array. This
-//          can yield a reasonable performance increase.
-//
-//      BYTEBUFFER_NO_BOUNDS_CHECK
-//          This will disable the bounds check asserts to the byte array. This can
-//          yield a small performance gain in normal code..
-//
-// Using UNSAFE_BYTEBUFFER and BYTEBUFFER_NO_BOUNDS_CHECK together can yield a
-// performance gain of ~15% for some operations, however doing so is potentially 
-// dangerous. Do so at your own risk!
-//
+// There are 2 #defines that have an impact on performance of this ByteBuffer implementation //
+// UNSAFE_BYTEBUFFER This will use unsafe code to manipulate the underlying byte array. This can
+// yield a reasonable performance increase. // BYTEBUFFER_NO_BOUNDS_CHECK This will disable the
+// bounds check asserts to the byte array. This can yield a small performance gain in normal code..
+// // Using UNSAFE_BYTEBUFFER and BYTEBUFFER_NO_BOUNDS_CHECK together can yield a performance gain of
+// ~15% for some operations, however doing so is potentially dangerous. Do so at your own risk!
 
 using System;
 
@@ -45,7 +37,9 @@ namespace FlatBuffers
 
         public byte[] Data { get { return _buffer; } }
 
-        public ByteBuffer(byte[] buffer) : this(buffer, 0) { }
+        public ByteBuffer(byte[] buffer) : this(buffer, 0)
+        {
+        }
 
         public ByteBuffer(byte[] buffer, int pos)
         {
@@ -53,7 +47,8 @@ namespace FlatBuffers
             _pos = pos;
         }
 
-        public int Position {
+        public int Position
+        {
             get { return _pos; }
             set { _pos = value; }
         }
@@ -65,6 +60,7 @@ namespace FlatBuffers
 
         // Pre-allocated helper arrays for convertion.
         private float[] floathelper = new[] { 0.0f };
+
         private int[] inthelper = new[] { 0 };
         private double[] doublehelper = new[] { 0.0 };
         private ulong[] ulonghelper = new[] { 0UL };
@@ -75,26 +71,29 @@ namespace FlatBuffers
             return (ushort)(((input & 0x00FFU) << 8) |
                             ((input & 0xFF00U) >> 8));
         }
+
         static public uint ReverseBytes(uint input)
         {
             return ((input & 0x000000FFU) << 24) |
-                   ((input & 0x0000FF00U) <<  8) |
-                   ((input & 0x00FF0000U) >>  8) |
+                   ((input & 0x0000FF00U) << 8) |
+                   ((input & 0x00FF0000U) >> 8) |
                    ((input & 0xFF000000U) >> 24);
         }
+
         static public ulong ReverseBytes(ulong input)
         {
             return (((input & 0x00000000000000FFUL) << 56) |
                     ((input & 0x000000000000FF00UL) << 40) |
                     ((input & 0x0000000000FF0000UL) << 24) |
-                    ((input & 0x00000000FF000000UL) <<  8) |
-                    ((input & 0x000000FF00000000UL) >>  8) |
+                    ((input & 0x00000000FF000000UL) << 8) |
+                    ((input & 0x000000FF00000000UL) >> 8) |
                     ((input & 0x0000FF0000000000UL) >> 24) |
                     ((input & 0x00FF000000000000UL) >> 40) |
                     ((input & 0xFF00000000000000UL) >> 56));
         }
 
 #if !UNSAFE_BYTEBUFFER
+
         // Helper functions for the safe (but slower) version.
         protected void WriteLittleEndian(int offset, int count, ulong data)
         {
@@ -122,28 +121,28 @@ namespace FlatBuffers
             {
                 for (int i = 0; i < count; i++)
                 {
-                  r |= (ulong)_buffer[offset + i] << i * 8;
+                    r |= (ulong)_buffer[offset + i] << i * 8;
                 }
             }
             else
             {
-              for (int i = 0; i < count; i++)
-              {
-                r |= (ulong)_buffer[offset + count - 1 - i] << i * 8;
-              }
+                for (int i = 0; i < count; i++)
+                {
+                    r |= (ulong)_buffer[offset + count - 1 - i] << i * 8;
+                }
             }
             return r;
         }
-#endif // !UNSAFE_BYTEBUFFER
 
+#endif // !UNSAFE_BYTEBUFFER
 
         private void AssertOffsetAndLength(int offset, int length)
         {
-            #if !BYTEBUFFER_NO_BOUNDS_CHECK
+#if !BYTEBUFFER_NO_BOUNDS_CHECK
             if (offset < 0 ||
                 offset > _buffer.Length - length)
                 throw new ArgumentOutOfRangeException();
-            #endif
+#endif
         }
 
         public void PutSbyte(int offset, sbyte value)
@@ -245,7 +244,6 @@ namespace FlatBuffers
                 if (BitConverter.IsLittleEndian)
                 {
                     *(double*)(ptr + offset) = value;
-
                 }
                 else
                 {
@@ -254,6 +252,7 @@ namespace FlatBuffers
             }
         }
 #else // !UNSAFE_BYTEBUFFER
+
         // Slower versions of Put* for when unsafe code is not allowed.
         public void PutShort(int offset, short value)
         {
@@ -405,6 +404,7 @@ namespace FlatBuffers
             }
         }
 #else // !UNSAFE_BYTEBUFFER
+
         // Slower versions of Get* for when unsafe code is not allowed.
         public short GetShort(int index)
         {
@@ -428,7 +428,7 @@ namespace FlatBuffers
 
         public long GetLong(int index)
         {
-           return (long)ReadLittleEndian(index, sizeof(long));
+            return (long)ReadLittleEndian(index, sizeof(long));
         }
 
         public ulong GetUlong(int index)
@@ -452,6 +452,7 @@ namespace FlatBuffers
             Buffer.BlockCopy(ulonghelper, 0, doublehelper, 0, sizeof(double));
             return doublehelper[0];
         }
+
 #endif // UNSAFE_BYTEBUFFER
     }
 }

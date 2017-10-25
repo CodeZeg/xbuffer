@@ -29,8 +29,7 @@ namespace FlatBuffers
 
         public ByteBuffer ByteBuffer { get { return bb; } }
 
-        // Look up a field in the vtable, return an offset into the object, or 0 if the field is not
-        // present.
+        // Look up a field in the vtable, return an offset into the object, or 0 if the field is not present.
         public int __offset(int vtableOffset)
         {
             int vtable = bb_pos - bb.GetInt(bb_pos);
@@ -60,7 +59,7 @@ namespace FlatBuffers
             offset += bb.GetInt(offset);
             var len = bb.GetInt(offset);
             var startPos = offset + sizeof(int);
-            return Encoding.UTF8.GetString(bb.Data, startPos , len);
+            return Encoding.UTF8.GetString(bb.Data, startPos, len);
         }
 
         // Get the length of a vector whose offset is stored at "offset" in this object.
@@ -79,8 +78,8 @@ namespace FlatBuffers
         }
 
         // Get the data of a vector whoses offset is stored at "offset" in this object as an
-        // ArraySegment&lt;byte&gt;. If the vector is not present in the ByteBuffer,
-        // then a null value will be returned.
+        // ArraySegment&lt;byte&gt;. If the vector is not present in the ByteBuffer, then a null
+        // value will be returned.
         public ArraySegment<byte>? __vector_as_arraysegment(int offset)
         {
             var o = this.__offset(offset);
@@ -127,7 +126,8 @@ namespace FlatBuffers
             var startPos_2 = offset_2 + sizeof(int);
             var len = Math.Min(len_1, len_2);
             byte[] bbArray = bb.Data;
-            for(int i = 0; i < len; i++) {
+            for (int i = 0; i < len; i++)
+            {
                 if (bbArray[i + startPos_1] != bbArray[i + startPos_2])
                     return bbArray[i + startPos_1] - bbArray[i + startPos_2];
             }
@@ -143,7 +143,8 @@ namespace FlatBuffers
             var startPos_1 = offset_1 + sizeof(int);
             var len = Math.Min(len_1, len_2);
             byte[] bbArray = bb.Data;
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < len; i++)
+            {
                 if (bbArray[i + startPos_1] != key[i])
                     return bbArray[i + startPos_1] - key[i];
             }

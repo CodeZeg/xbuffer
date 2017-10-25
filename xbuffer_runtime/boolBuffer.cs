@@ -1,4 +1,12 @@
-﻿namespace xbuffer
+﻿/*
+ * File Name:               boolBuffer.cs
+ *
+ * Description:             基本类型处理
+ * Author:                  lisiyu <576603306@qq.com>
+ * Create Date:             2017/10/25
+ */
+
+namespace xbuffer
 {
     public class boolBuffer
     {

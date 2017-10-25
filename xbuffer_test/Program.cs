@@ -1,22 +1,27 @@
 ﻿namespace xbuffer_test
 {
+    using FlatBuffers;
     using System;
     using xbuffer;
-    using Example;
-    using System.Collections.Generic;
-    using FlatBuffers;
+    using proto.test_proto;
+    using System.IO;
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var data_xbuffer = getA(1000000);
 
-            test_xbuffer(data_xbuffer);
+            Console.WriteLine(" ======================== protobuf =========================== ");
             test_protobuf(data_xbuffer);
+
+            Console.WriteLine(" ======================== flatbuf ============================ ");
             test_flatbuf(data_xbuffer);
 
-            Console.WriteLine("统计完成");
+            Console.WriteLine(" ======================== xbuffer ============================ ");
+            test_xbuffer(data_xbuffer);
+
+            Console.WriteLine("\n统计完成.");
             Console.ReadLine();
         }
 
@@ -28,50 +33,62 @@
             int offset = 0;
             Timer.beginTime();
             ABuffer.serialize(data, buffer, ref offset);
-            Timer.endTime("xbuffer serialize");
+            Timer.endTime("xbuffer 普通模式序列化");
 
             // 反序列化
             offset = 0;
             Timer.beginTime();
             ABuffer.deserialize(buffer, ref offset);
-            Timer.endTime("xbuffer deserialize");
+            Timer.endTime("xbuffer 普通模式反序列化");
+
+            // 泛型模式序列化
+            Timer.beginTime();
+            Serializer.serialize(data, buffer);
+            Timer.endTime("xbuffer 泛型模式序列化");
+
+            // 泛型模式反序列化
+            Timer.beginTime();
+            Serializer.deserialize<A>(buffer);
+            Timer.endTime("xbuffer 泛型模式反序列化");
 
             // 内存占用
-            Console.WriteLine(string.Format("xbuffer use memory is {0} byte.", offset));
+            Console.WriteLine(string.Format(" xbuffer 普通模式总占用内存 {0} byte.", offset));
         }
 
         private static void test_protobuf(A data)
         {
-            ProtoA a = new ProtoA()
-            {
-                A = new List<bool>(data.a),
-                B = new List<int>(data.b),
-                C = new List<float>(data.c),
-                D = new List<string>(data.d),
-            };
-            a.E = new List<ProtoE>();
+            proto_a a = new proto_a();
+            a.a.AddRange(data.a);
+            a.b.AddRange(data.b);
+            a.c.AddRange(data.c);
+            a.d.AddRange(data.d);
             foreach (var item in data.e)
             {
-                a.E.Add(new ProtoE() {
-                    A = item.a,
-                    B = item.b,
-                    C = item.c,
-                    D = item.d,
+                a.e.Add(new proto_e()
+                {
+                    a = item.a,
+                    b = item.b,
+                    c = item.c,
+                    d = item.d,
                 });
             }
 
-            // 序列化
-            Timer.beginTime();
-            var buffer = ProtoA.SerializeToBytes(a);
-            Timer.endTime("protobuf serialize");
+            using (var mem = new MemoryStream())
+            {
+                // 序列化
+                Timer.beginTime();
+                ProtoBuf.Serializer.Serialize(mem, a);
+                Timer.endTime("protobuf 序列化");
 
-            // 反序列化
-            Timer.beginTime();
-            ProtoA.Deserialize(buffer);
-            Timer.endTime("protobuf deserialize");
+                // 反序列化
+                Timer.beginTime();
+                mem.Position = 0;
+                var b = ProtoBuf.Serializer.Deserialize<proto_a>(mem);
+                Timer.endTime("protobuf 反序列化");
 
-            // 内存占用
-            Console.WriteLine(string.Format("protobuf use memory is {0} byte.", buffer.Length));
+                // 内存占用
+                Console.WriteLine(string.Format(" protobuf 占用内存 {0} byte.", mem.Length));
+            }
         }
 
         private static void test_flatbuf(A data)
@@ -102,13 +119,13 @@
 
             var offset_flat_a = FlatA.CreateFlatA(fbb, offset_a, offset_b, offset_c, offset_d, offset_e);
             FlatA.FinishFlatABuffer(fbb, offset_flat_a);
-            Timer.endTime("flatbuf serialize");
+            Timer.endTime("flatbuf 序列化");
 
             // 反序列化
             Timer.beginTime();
             var buffer = fbb.DataBuffer;
             var flatA = FlatA.GetRootAsFlatA(buffer);
-            Timer.endTime("flatbuf deserialize");
+            Timer.endTime("flatbuf 反序列化");
             var ret = new A();
             ret.a = new bool[flatA.ALength];
             for (int i = 0; i < flatA.ALength; i++)
@@ -142,10 +159,10 @@
                     d = tmpE.D,
                 };
             }
-            Timer.endTime("flatbuf deserialize and use every data once");
+            Timer.endTime("flatbuf 反序列化并且获取所有数据一次");
 
             // 内存占用
-            Console.WriteLine(string.Format("flatbuf use memory is {0} byte.", buffer.Length));
+            Console.WriteLine(string.Format(" flatbuf 总占用内存 {0} byte.", buffer.Length));
         }
 
         private static A getA(int count)
@@ -179,6 +196,7 @@
     {
         private static long lastTime;
         private static long curTime;
+
         public static void beginTime()
         {
             curTime = DateTime.Now.Ticks / 10000;
@@ -189,10 +207,9 @@
         {
             curTime = DateTime.Now.Ticks / 10000;
 
-            Console.WriteLine(string.Format("{0} used time : {1} ms.", log, curTime - lastTime));
+            Console.WriteLine(string.Format(" {0} 耗时 : {1} 毫秒.", log, curTime - lastTime));
 
             lastTime = curTime;
         }
     }
-
 }

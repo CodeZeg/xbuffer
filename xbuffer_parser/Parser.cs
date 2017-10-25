@@ -1,8 +1,13 @@
-﻿namespace xbuffer
+﻿/*
+ * File Name:               Parser.cs
+ *
+ * Description:             将类对象转化成代码文本
+ * Author:                  lisiyu <576603306@qq.com>
+ * Create Date:             2017/10/25
+ */
+
+namespace xbuffer
 {
-    /// <summary>
-    /// 将类对象转化成代码文本
-    /// </summary>
     public class Parser
     {
         /// <summary>

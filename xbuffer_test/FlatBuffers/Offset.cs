@@ -22,6 +22,7 @@ namespace FlatBuffers
     public struct Offset<T> where T : class
     {
         public int Value;
+
         public Offset(int value)
         {
             Value = value;
@@ -31,6 +32,7 @@ namespace FlatBuffers
     public struct StringOffset
     {
         public int Value;
+
         public StringOffset(int value)
         {
             Value = value;
@@ -40,6 +42,7 @@ namespace FlatBuffers
     public struct VectorOffset
     {
         public int Value;
+
         public VectorOffset(int value)
         {
             Value = value;
