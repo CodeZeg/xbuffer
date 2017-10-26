@@ -1,16 +1,18 @@
+// A注释02
 class A
 {
-	a:[bool];
-	b:[int];
-	c:[float];
-	d:[string];
-	e:[E];
+	a:[bool];		// 啊啊啊啊啊啊啊
+	b:[int];		// 	棒棒棒棒棒棒棒棒棒棒棒棒 
+	c:[float];		// 才擦擦擦擦擦擦擦擦擦擦
+	d:[string];		// 顶顶顶顶顶顶顶顶顶
+	e:[E];			// 呃呃呃呃呃呃呃呃呃	
 }
 
+// E注释02
 class E
 {
-	a:bool;
-	b:int;
-	c:float;
-	d:string;
+	a:bool;			// 阿爸爸爸爸
+	b:int;			// 哎哎哎
+	c:float;		// 春风吹日此番	
+	d:string;		// 多少多少多少的速度	
 }

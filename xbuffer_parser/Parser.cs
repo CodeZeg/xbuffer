@@ -22,6 +22,7 @@ namespace xbuffer
 
             template.setValue("#CLASS_TYPE#", proto_class.Class_Type);
             template.setValue("#CLASS_NAME#", proto_class.Class_Name);
+            template.setValue("#CLASS_COMMENT", proto_class.Class_Comment);
 
             template.setCondition("DESERIALIZE_CLASS", proto_class.Class_Type == "class");
             template.setCondition("SERIALIZE_CLASS", proto_class.Class_Type == "class");
@@ -34,6 +35,7 @@ namespace xbuffer
                     template.setCondition("ARRAY", item.IsArray);
                     template.setValue("#VAR_TYPE#", item.Var_Type);
                     template.setValue("#VAR_NAME#", item.Var_Name);
+                    template.setValue("#VAR_COMMENT", item.Var_Comment);
                     template.nextLoop();
                 }
                 template.endLoop();
