@@ -31,16 +31,19 @@ namespace xbuffer
                 else
                     Directory.CreateDirectory(Config.path_output + "/" + template_name);
                 var output = "";
+                var showHead = true;
                 foreach (var proto_class in proto_classs)
                 {
                     if(Config.package)
                     {
-                        output += Parser.parse(proto_class, template_str);
+                        output += Parser.parse(proto_class, template_str, showHead);
                         output += "\n\n";
+                        showHead = false;
                     }
                     else
                     {
-                        output = Parser.parse(proto_class, template_str);
+                        output = Parser.parse(proto_class, template_str, showHead);
+                        showHead = false;
                         File.WriteAllText(Config.path_output + "/" + template_name + "/" + proto_class.Class_Name + (isBuffer ? "Buffer" : "") + "." + Config.suffix, output);
                     }
                 }

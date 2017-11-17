@@ -16,10 +16,11 @@ namespace xbuffer
         /// <param name="proto_class">类结构</param>
         /// <param name="template_str">模板文本</param>
         /// <returns></returns>
-        public static string parse(Proto_Class proto_class, string template_str)
+        public static string parse(Proto_Class proto_class, string template_str, bool showHead)
         {
             var template = new XTemplate(template_str);
 
+            template.setCondition("HEAD", showHead);
             template.setValue("#CLASS_TYPE#", proto_class.Class_Type);
             template.setValue("#CLASS_NAME#", proto_class.Class_Name);
             template.setValue("#CLASS_COMMENT", proto_class.Class_Comment);
