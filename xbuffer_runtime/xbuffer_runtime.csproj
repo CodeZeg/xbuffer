@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="boolBuffer.cs" />
+    <Compile Include="byteBuffer.cs" />
+    <Compile Include="uintBuffer.cs" />
     <Compile Include="intBuffer.cs" />
     <Compile Include="longBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
