@@ -7,52 +7,60 @@ namespace xbuffer
     {
         private static void Main(string[] args)
         {
-            if (args.Length == 0)
+            if (!Config.load(args))
             {
-                Console.WriteLine("请输入结构文件的路径！");
-                Console.ReadLine();
+                Console.WriteLine("请输入正确的参数！");
                 return;
             }
 
-            var proto = File.ReadAllText(args[0]);
-            var proto_classs = new Proto(proto).class_protos;
-
-            var templates = new DirectoryInfo(Config.path_template).GetFiles();
-            foreach (var template in templates)
+            if (!File.Exists(Config.input))
             {
-                var template_str = File.ReadAllText(Config.path_template + "/" + template.Name);
-                var template_name = Path.GetFileNameWithoutExtension(template.Name);
-                var isBuffer = template_name.Contains("buffer");
-
-                Console.WriteLine("开始解析模板 " + template_name + " ...");
-
-                if (Config.package)
-                    Directory.CreateDirectory(Config.path_output);
-                else
-                    Directory.CreateDirectory(Config.path_output + "/" + template_name);
-                var output = "";
-                var showHead = true;
-                foreach (var proto_class in proto_classs)
-                {
-                    if(Config.package)
-                    {
-                        output += Parser.parse(proto_class, template_str, showHead);
-                        output += "\n\n";
-                        showHead = false;
-                    }
-                    else
-                    {
-                        output = Parser.parse(proto_class, template_str, showHead);
-                        showHead = false;
-                        File.WriteAllText(Config.path_output + "/" + template_name + "/" + proto_class.Class_Name + (isBuffer ? "Buffer" : "") + "." + Config.suffix, output);
-                    }
-                }
-                if (Config.package)
-                    File.WriteAllText(Config.path_output + "/" + template_name + "." + Config.suffix, output);
+                Console.WriteLine("请输入正确的描述文件路径");
+                return;
             }
 
-            Console.WriteLine("生成完毕");
-            Console.ReadLine();
+            if (!File.Exists(Config.template))
+            {
+                Console.WriteLine("请输入正确的模板文件路径");
+                return;
+            }
+
+            var proto = File.ReadAllText(Config.input);
+            var proto_classs = new Proto(proto).class_protos;
+
+            var template_str = File.ReadAllText(Config.template);
+            var template_name = Path.GetFileNameWithoutExtension(Config.template);
+
+            if (Config.output_file == "")
+            {
+                Directory.CreateDirectory(Config.output_dir);
+            }
+            else
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(Config.output_file));
+            }
+
+            var output = "";
+            var showHead = true;
+            foreach (var proto_class in proto_classs)
+            {
+                if (Config.output_file == "")
+                {
+                    output = Parser.parse(proto_class, template_str, showHead);
+                    showHead = false;
+                    File.WriteAllText(Config.output_dir + "/" + proto_class.Class_Name + Config.suffix, output);
+                }
+                else
+                {
+                    output += Parser.parse(proto_class, template_str, showHead);
+                    output += "\n\n";
+                    showHead = false;
+                }
+            }
+            if (Config.output_file != "")
+                File.WriteAllText(Config.output_file + Config.suffix, output);
+
+            Console.WriteLine(string.Format("生成完毕 input:{0}, template:{1}", Path.GetFileName(Config.input), Path.GetFileName(Config.template)));
         }
     }
 }
