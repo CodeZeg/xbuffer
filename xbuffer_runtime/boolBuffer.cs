@@ -10,9 +10,9 @@ namespace xbuffer
 {
     public class boolBuffer
     {
-        private static readonly int size = sizeof(bool);
+        private static readonly uint size = sizeof(bool);
 
-        public unsafe static bool deserialize(byte[] buffer, ref int offset)
+        public unsafe static bool deserialize(byte[] buffer, ref uint offset)
         {
             fixed (byte* ptr = buffer)
             {
@@ -22,12 +22,13 @@ namespace xbuffer
             }
         }
 
-        public unsafe static void serialize(bool value, byte[] buffer, ref int offset)
+        public unsafe static void serialize(bool value, XSteam steam)
         {
-            fixed (byte* ptr = buffer)
+            steam.applySize(size);
+            fixed (byte* ptr = steam.contents[steam.index_group])
             {
-                *(bool*)(ptr + offset) = value;
-                offset += size;
+                *(bool*)(ptr + steam.index_cell) = value;
+                steam.index_cell += size;
             }
         }
     }

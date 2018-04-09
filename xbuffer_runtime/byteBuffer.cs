@@ -10,19 +10,20 @@ namespace xbuffer
 {
     public class byteBuffer
     {
-        private static readonly int size = sizeof(byte);
+        private static readonly uint size = sizeof(byte);
 
-        public unsafe static byte deserialize(byte[] buffer, ref int offset)
+        public unsafe static byte deserialize(byte[] buffer, ref uint offset)
         {
             var value = buffer[offset];
             offset += size;
             return value;
         }
 
-        public unsafe static void serialize(byte value, byte[] buffer, ref int offset)
+        public unsafe static void serialize(byte value, XSteam steam)
         {
-            buffer[offset] = value;
-            offset += size;
+            steam.applySize(size);
+            steam.contents[steam.index_group][steam.index_cell] = value;
+            steam.index_cell += size;
         }
     }
 }

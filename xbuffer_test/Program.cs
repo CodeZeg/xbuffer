@@ -27,14 +27,15 @@
 
         private static void test_xbuffer(A data)
         {
-            var buffer = new byte[1024 * 1024 * 100];
+            var steam = new XSteam(1, 1024 * 1024 * 100);
 
             // 序列化
-            int offset = 0;
+            uint offset = 0;
             Timer.beginTime();
-            ABuffer.serialize(data, buffer, ref offset);
+            ABuffer.serialize(data, steam);
             Timer.endTime("xbuffer 普通模式序列化");
 
+            var buffer = steam.getBytes();
             // 反序列化
             offset = 0;
             Timer.beginTime();
@@ -43,16 +44,18 @@
 
             // 泛型模式序列化
             Timer.beginTime();
-            Serializer.serialize(data, buffer);
+            Serializer.cachedSteam = steam;
+            Serializer.serialize(data);
             Timer.endTime("xbuffer 泛型模式序列化");
 
+            buffer = steam.getBytes();
             // 泛型模式反序列化
             Timer.beginTime();
             Serializer.deserialize<A>(buffer);
             Timer.endTime("xbuffer 泛型模式反序列化");
 
             // 内存占用
-            Console.WriteLine(string.Format(" xbuffer 普通模式总占用内存 {0} byte.", offset));
+            Console.WriteLine(string.Format(" xbuffer 普通模式总占用内存 {0} byte.", buffer.Length));
         }
 
         private static void test_protobuf(A data)

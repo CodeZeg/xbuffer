@@ -2,7 +2,7 @@ namespace xbuffer
 {
     public static class EBuffer
     {
-        public static E deserialize(byte[] buffer, ref int offset)
+        public static E deserialize(byte[] buffer, ref uint offset)
         {
             // null
             bool _null = boolBuffer.deserialize(buffer, ref offset);
@@ -27,20 +27,20 @@ namespace xbuffer
             };
         }
 
-        public static void serialize(E value, byte[] buffer, ref int offset)
+        public static void serialize(E value, XSteam steam)
         {
             // null
-            boolBuffer.serialize(value == null, buffer, ref offset);
+            boolBuffer.serialize(value == null, steam);
             if (value == null) return;
 
             // a
-            boolBuffer.serialize(value.a, buffer, ref offset);
+            boolBuffer.serialize(value.a, steam);
             // b
-            intBuffer.serialize(value.b, buffer, ref offset);
+            intBuffer.serialize(value.b, steam);
             // c
-            floatBuffer.serialize(value.c, buffer, ref offset);
+            floatBuffer.serialize(value.c, steam);
             // d
-            stringBuffer.serialize(value.d, buffer, ref offset);
+            stringBuffer.serialize(value.d, steam);
         }
     }
 }

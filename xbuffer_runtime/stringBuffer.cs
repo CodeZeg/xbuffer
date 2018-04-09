@@ -12,26 +12,26 @@ namespace xbuffer
 {
     public class stringBuffer
     {
-        private static readonly int size = sizeof(int);
-
-        public unsafe static string deserialize(byte[] buffer, ref int offset)
+        public unsafe static string deserialize(byte[] buffer, ref uint offset)
         {
             fixed (byte* ptr = buffer)
             {
-                int byteCount = intBuffer.deserialize(buffer, ref offset);
-                string value = Encoding.UTF8.GetString(buffer, offset, byteCount);
+                uint byteCount = uintBuffer.deserialize(buffer, ref offset);
+                string value = Encoding.UTF8.GetString(buffer, (int)offset, (int)byteCount);
                 offset += byteCount;
                 return value;
             }
         }
 
-        public unsafe static void serialize(string value, byte[] buffer, ref int offset)
+        public unsafe static void serialize(string value, XSteam steam)
         {
-            fixed (byte* ptr = buffer)
+            var bytes = Encoding.UTF8.GetBytes(value);
+            uintBuffer.serialize((uint)bytes.Length, steam);
+            for (int i = 0; i < bytes.Length; i++)
             {
-                int byteCount = Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + size);
-                intBuffer.serialize(byteCount, buffer, ref offset);
-                offset += byteCount;
+                steam.applySize(1);
+                steam.contents[steam.index_group][steam.index_cell] = bytes[i];
+                steam.index_cell += 1;
             }
         }
     }

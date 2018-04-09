@@ -12,33 +12,26 @@ namespace xbuffer
 {
     public class floatBuffer
     {
-        private static readonly int size = sizeof(float);
+        private static readonly uint size = sizeof(float);
 
-        public unsafe static float deserialize(byte[] buffer, ref int offset)
+        public unsafe static float deserialize(byte[] buffer, ref uint offset)
         {
             fixed (byte* ptr = buffer)
             {
                 var value = *(float*)(ptr + offset);
                 offset += size;
-                return BitConverter.IsLittleEndian ? value : (float)reverseBytes((uint)value);
+                return BitConverter.IsLittleEndian ? value : utils.toLittleEndian((uint)value);
             }
         }
 
-        public unsafe static void serialize(float value, byte[] buffer, ref int offset)
+        public unsafe static void serialize(float value, XSteam steam)
         {
-            fixed (byte* ptr = buffer)
+            steam.applySize(size);
+            fixed (byte* ptr = steam.contents[steam.index_group])
             {
-                *(float*)(ptr + offset) = BitConverter.IsLittleEndian ? value : (float)reverseBytes((uint)value);
-                offset += size;
+                *(float*)(ptr + steam.index_cell) = BitConverter.IsLittleEndian ? value : utils.toLittleEndian((uint)value);
+                steam.index_cell += size;
             }
-        }
-
-        private static uint reverseBytes(uint value)
-        {
-            return ((value & 0x000000FFU) << 24) |
-                    ((value & 0x0000FF00U) << 8) |
-                    ((value & 0x00FF0000U) >> 8) |
-                    ((value & 0xFF000000U) >> 24);
         }
     }
 }
